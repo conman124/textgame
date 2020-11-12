@@ -9,8 +9,8 @@ namespace Game {
 
 class MonasteryMazeRoomMaintainer : public IRoomMaintainer<std::string> {
 protected:
-	virtual std::shared_ptr<IFullRoom> constructRoom(RoomIdType id) const override;
-	virtual RoomIdType normalizeId(RoomIdType) const override;
+	virtual std::shared_ptr<IFullRoom> constructRoom(const RoomIdType& id) const override;
+	virtual RoomIdType normalizeId(const RoomIdType& id) const override;
 };
 
 class MonasteryMazeRoom : public IRoomMaintainer<std::string>::IFullRoom {

@@ -3,11 +3,11 @@
 #include <iostream>
 
 namespace Game {
-std::shared_ptr<MonasteryMazeRoomMaintainer::IFullRoom> MonasteryMazeRoomMaintainer::constructRoom(RoomIdType id) const {
+std::shared_ptr<MonasteryMazeRoomMaintainer::IFullRoom> MonasteryMazeRoomMaintainer::constructRoom(const RoomIdType& id) const {
 	return std::make_shared<MonasteryMazeRoom>(id);
 }
 
-std::string MonasteryMazeRoomMaintainer::normalizeId(std::string id ) const {
+std::string MonasteryMazeRoomMaintainer::normalizeId(const std::string& id ) const {
 	if(std::string{"eternity"}.find(id) != 0) {
 		return "";
 	}
