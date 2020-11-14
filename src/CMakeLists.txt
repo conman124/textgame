@@ -11,5 +11,11 @@ find_package( Threads )
 
 include_directories( ${Boost_INCLUDE_DIRS} )
 
-add_executable(textgame main.cpp MonasteryMazeRoomMaintainer.cpp interfaces/IRoom.cpp)
-target_link_libraries(textgame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+add_executable(textgame 
+	main.cpp
+	interfaces/IRoom.cpp
+	io/CommandReader.cpp
+	MonasteryMazeRoomMaintainer.cpp
+	TimerManager.cpp
+)
+target_link_libraries(textgame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
