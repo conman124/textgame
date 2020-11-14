@@ -6,7 +6,7 @@
 		{
 			"label": "build",
 			"type": "shell",
-			"command": "mkdir -p build && cd build && CXX=g++-9 cmake ../src && make ",
+			"command": "mkdir -p build/debug && cd build/debug && CXX=clang++ CC=clang cmake -DCMAKE_BUILD_TYPE=Debug ../../src && make -j 2",
 			"problemMatcher": [
 				"$gcc"
 			],

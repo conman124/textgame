@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project("textgame")
 
-set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Werror")
+set(CMAKE_CXX_FLAGS "-std=c++20 -Wall -Wextra -Werror")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Og -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fsanitize=address")
