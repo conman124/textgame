@@ -1,5 +1,6 @@
 #include "MonasteryMazeRoomMaintainer.h"
 
+#include <fmt/core.h>
 #include <iostream>
 
 namespace Game {
@@ -29,8 +30,8 @@ std::vector<MonasteryMazeRoomMaintainer::ExitDescriptor> MonasteryMazeRoom::exit
 	return ret;
 }
 
-void MonasteryMazeRoom::innerDescribe(ConsoleOutputter& writer) const {
-	writer.write("You have made it to: {}", id);
+std::string MonasteryMazeRoom::innerDescribe() const {
+	return fmt::format("You have made it to: {}", id);
 }
 
 }

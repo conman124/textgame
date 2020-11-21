@@ -3,12 +3,10 @@
 
 #include <string>
 
-class ConsoleOutputter;
-
 namespace Game {
 class IHasDescription {
 public:
-	virtual void describe(ConsoleOutputter& writer) const = 0;
+	virtual std::string describe() const = 0;
 	virtual ~IHasDescription() {};
 };
 }

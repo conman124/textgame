@@ -29,7 +29,7 @@ public:
 		virtual std::vector<ExitDescriptor> exitDescriptors() const = 0;
 	protected:
 		virtual std::vector<std::string> exitNames(bool includeHidden = false) const final;
-		virtual void innerDescribe(ConsoleOutputter& writer) const override = 0;
+		virtual std::string innerDescribe() const override = 0;
 	};
 
 	std::shared_ptr<IFullRoom> getRoom(const RoomIdType& id);

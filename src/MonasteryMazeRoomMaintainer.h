@@ -19,7 +19,7 @@ public:
 	MonasteryMazeRoom(std::string name);
 	virtual std::vector<IRoomMaintainer<std::string>::ExitDescriptor> exitDescriptors() const override;
 protected:
-	virtual void innerDescribe(ConsoleOutputter& writer) const override;
+	virtual std::string innerDescribe() const override;
 private:
 	std::string id;
 };

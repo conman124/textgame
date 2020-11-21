@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 	auto room = maintainer.getRoom("");
 
 	std::string exit;
-	room->describe(writer);
+	writer.write(room->describe());
 
 	int commands = 0;
 
@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 
 		room = maintainer.getRoom(it->id);
 
-		room->describe(writer);
+		writer.write(room->describe());
 
 		if(++commands == 5) {
 			startTimer(timerManager, writer);

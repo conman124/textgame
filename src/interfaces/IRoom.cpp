@@ -5,12 +5,14 @@
 #include <sstream>
 #include <vector>
 
-void Game::IRoom::describe(ConsoleOutputter& writer) const {
-	innerDescribe(writer);
-	printExits(writer);
+std::string Game::IRoom::describe() const {
+	std::string out = innerDescribe();
+	out += "\n";
+	out += stringifyExits();
+	return out;
 }
 
-void Game::IRoom::printExits(ConsoleOutputter& writer) const {
+std::string Game::IRoom::stringifyExits() const {
 	auto exits = exitNames();
 	std::stringstream sstr;
 	if(exits.size() > 0) {
@@ -22,5 +24,5 @@ void Game::IRoom::printExits(ConsoleOutputter& writer) const {
 	} else {
 		sstr << "There are no exits.";
 	}
-	writer.write(sstr.str());
+	return sstr.str();
 }
