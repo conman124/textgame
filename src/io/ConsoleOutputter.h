@@ -1,12 +1,10 @@
 #ifndef CONSOLEOUTPUTTER_H
 #define CONSOLEOUTPUTTER_H
 
-#include "CommandLoop.h"
-
-#include <fmt/core.h>
 #include <iostream>
-#include <memory>
-#include <readline.h>
+#include <string_view>
+
+class CommandLoop;
 
 class ConsoleOutputter {
 public:

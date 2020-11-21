@@ -1,7 +1,6 @@
 #include "MonasteryMazeRoomMaintainer.h"
 
 #include <fmt/core.h>
-#include <iostream>
 
 namespace Game {
 std::shared_ptr<MonasteryMazeRoomMaintainer::IFullRoom> MonasteryMazeRoomMaintainer::constructRoom(const RoomIdType& id) const {

@@ -2,9 +2,10 @@
 #define MONASTERY_MAZE_ROOM_MAINTAINER_H
 
 #include "interfaces/IRoomMaintainer.h"
-#include "io/ConsoleOutputter.h"
 
+#include <memory>
 #include <string>
+#include <vector>
 
 namespace Game {
 

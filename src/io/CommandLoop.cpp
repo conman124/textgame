@@ -1,21 +1,21 @@
 #include "CommandLoop.h"
 
-#include "ConsoleOutputter.h"
-
 #include <boost/fiber/buffered_channel.hpp>
+#include <boost/fiber/channel_op_status.hpp>
 #include <boost/fiber/fiber.hpp>
 
 #include <chrono>
-#include <iostream>
+#include <cstdlib>
+#include <functional>
 #include <optional>
 #include <poll.h>
 #include <readline.h>
 #include <thread>
+#include <unistd.h>
 
 using namespace std::chrono_literals;
-namespace fibers = boost::fibers;
 
-void watch_stdin(fibers::buffered_channel<bool>& ping, fibers::buffered_channel<bool>& ack);
+void watch_stdin(boost::fibers::buffered_channel<bool>& ping, boost::fibers::buffered_channel<bool>& ack);
 void handle_line(char* line);
 
 CommandLoop::CommandLoop()
@@ -34,7 +34,7 @@ std::optional<std::string> CommandLoop::waitForCommand() {
 
 	// Now wait for the command:
 	std::string command;
-	if(fibers::channel_op_status::success != command_channel.pop(command)) {
+	if(boost::fibers::channel_op_status::success != command_channel.pop(command)) {
 		return {};
 	}
 	return command;
@@ -44,14 +44,14 @@ std::optional<std::string> CommandLoop::command_received;
 
 void CommandLoop::read_command_loop() {
 	// Kick off a thread which uses poll to wait until there's stdin to read
-	fibers::buffered_channel<bool> watch_stdin_thread_tx{2};
-	fibers::buffered_channel<bool> watch_stdin_thread_rx{2};
+	boost::fibers::buffered_channel<bool> watch_stdin_thread_tx{2};
+	boost::fibers::buffered_channel<bool> watch_stdin_thread_rx{2};
 	std::thread watch_stdin_thread{watch_stdin, std::ref(watch_stdin_thread_tx), std::ref(watch_stdin_thread_rx)};
 	
 	while(true) {
 		// Wait for the main fiber to tell me that it wants a command
 		bool garbage;
-		if(ready_for_command_channel.pop(garbage) != fibers::channel_op_status::success) { break; }
+		if(ready_for_command_channel.pop(garbage) != boost::fibers::channel_op_status::success) { break; }
 
 
 		// Tell readline to put out a prompt:
@@ -63,7 +63,7 @@ void CommandLoop::read_command_loop() {
 			// Tell the watch_stdin_thread that we're waiting on input ...
 			watch_stdin_thread_tx.push(true);
 			// ... then wait for the watch_stdin_thread to tell me there's something to read
-			if(watch_stdin_thread_rx.pop(garbage) != fibers::channel_op_status::success) {
+			if(watch_stdin_thread_rx.pop(garbage) != boost::fibers::channel_op_status::success) {
 				// TODO does this need to break multiple levels?
 				break;
 			}
@@ -91,14 +91,14 @@ void CommandLoop::read_command_loop() {
 	watch_stdin_thread.join();
 }
 
-void watch_stdin(fibers::buffered_channel<bool>& rx, fibers::buffered_channel<bool>& tx) {
+void watch_stdin(boost::fibers::buffered_channel<bool>& rx, boost::fibers::buffered_channel<bool>& tx) {
 	struct pollfd fd;
 	fd.fd = STDIN_FILENO;
 	fd.events = POLLIN;
 	while(true) {
 		// Wait for the read_command_loop to tell us it's waiting on us:
 		bool garbage;
-		if(rx.pop(garbage) != fibers::channel_op_status::success) { break; }
+		if(rx.pop(garbage) != boost::fibers::channel_op_status::success) { break; }
 
 		// Then wait until there's something in the stdin buffer
 		poll(&fd, 1, -1);

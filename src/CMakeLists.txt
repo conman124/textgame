@@ -10,7 +10,7 @@ find_package(Boost 1.71 REQUIRED COMPONENTS fiber)
 find_package( Threads )
 
 include_directories( ${Boost_INCLUDE_DIRS} )
-include_directories( /usr/include/readline )
+include_directories( SYSTEM /usr/include/readline )
 
 add_executable(textgame 
 	main.cpp

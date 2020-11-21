@@ -1,6 +1,6 @@
 #include "IRoom.h"
 
-#include <iostream>
+#include <cstddef>
 #include <string>
 #include <sstream>
 #include <vector>

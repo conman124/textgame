@@ -1,13 +1,16 @@
 #include "TimerManager.h"
 
+#include <boost/fiber/channel_op_status.hpp>
+#include <string_view>
+#include <vector>
+
 #include <memory>
 #include <queue>
 #include <random>
 
 using namespace std::literals;
-namespace fibers = boost::fibers;
 
-void timer_loop(fibers::unbuffered_channel<RepeatingTimerRequest>& rx);
+void timer_loop(boost::fibers::unbuffered_channel<RepeatingTimerRequest>& rx);
 template <class RandomGenerator>
 std::chrono::steady_clock::time_point calculateNextFire(std::chrono::milliseconds min, std::chrono::milliseconds max, RandomGenerator& generator);
 
@@ -45,7 +48,7 @@ struct CompleteRepeatingTimerRequest {
 	std::chrono::steady_clock::time_point nextFire;
 };
 
-void timer_loop(fibers::unbuffered_channel<RepeatingTimerRequest>& rx) {
+void timer_loop(boost::fibers::unbuffered_channel<RepeatingTimerRequest>& rx) {
 	auto cmp = [](CompleteRepeatingTimerRequest a, CompleteRepeatingTimerRequest b) {
 		return a.nextFire > b.nextFire;
 	};
@@ -55,14 +58,14 @@ void timer_loop(fibers::unbuffered_channel<RepeatingTimerRequest>& rx) {
 
 	while(true) {
 		RepeatingTimerRequest addTimer;
-		fibers::channel_op_status status;
+		boost::fibers::channel_op_status status;
 		if(timers.size()) {
 			status = rx.pop_wait_until(addTimer, timers.top().nextFire);
 		} else {
 			status = rx.pop(addTimer);
 		}
 
-		if(status == fibers::channel_op_status::success) {
+		if(status == boost::fibers::channel_op_status::success) {
 			CompleteRepeatingTimerRequest completeTimer = {
 				.callback = addTimer.callback,
 				.min = addTimer.min,
@@ -70,7 +73,7 @@ void timer_loop(fibers::unbuffered_channel<RepeatingTimerRequest>& rx) {
 				.nextFire = calculateNextFire(addTimer.ignoreMinFirstTime ? 0s : addTimer.min, addTimer.max, generator),
 			};
 			timers.push(completeTimer);
-		} else if (status == fibers::channel_op_status::timeout) {
+		} else if (status == boost::fibers::channel_op_status::timeout) {
 			auto now = std::chrono::steady_clock::now();
 			while(timers.size() && timers.top().nextFire < now) {
 				auto next = timers.top();

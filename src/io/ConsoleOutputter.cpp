@@ -1,8 +1,9 @@
 #include "ConsoleOutputter.h"
 
+#include "CommandLoop.h"
+
 #include <iostream>
 #include <readline.h>
-#include <string>
 
 void ConsoleOutputter::write(const std::string_view& string) {
 	bool prompted_readline = commandLoop.prompted_readline;

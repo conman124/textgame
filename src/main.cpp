@@ -7,7 +7,10 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
-#include <poll.h>
+#include <memory>
+#include <optional>
+#include <readline.h>
+#include <string>
 #include <vector>
 
 using namespace std::chrono_literals;
