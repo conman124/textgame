@@ -1,6 +1,7 @@
 #ifndef I_ROOM_MAINTAINER
 #define I_ROOM_MAINTAINER
 
+#include "../io/ConsoleOutputter.h"
 #include "IRoom.h"
 
 #include <algorithm>
@@ -28,7 +29,7 @@ public:
 		virtual std::vector<ExitDescriptor> exitDescriptors() const = 0;
 	protected:
 		virtual std::vector<std::string> exitNames(bool includeHidden = false) const final;
-		virtual void innerDescribe() const override = 0;
+		virtual void innerDescribe(ConsoleOutputter& writer) const override = 0;
 	};
 
 	std::shared_ptr<IFullRoom> getRoom(const RoomIdType& id);

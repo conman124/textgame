@@ -2,24 +2,25 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 
-void Game::IRoom::describe() const {
-	innerDescribe();
-	std::cout << "\n";
-	printExits();
-	std::cout << "\n";
+void Game::IRoom::describe(ConsoleOutputter& writer) const {
+	innerDescribe(writer);
+	printExits(writer);
 }
 
-void Game::IRoom::printExits() const {
+void Game::IRoom::printExits(ConsoleOutputter& writer) const {
 	auto exits = exitNames();
+	std::stringstream sstr;
 	if(exits.size() > 0) {
-		std::cout << "Exits: ";
-		std::cout << exits[0];
+		sstr << "Exits: ";
+		sstr << exits[0];
 		for(size_t i = 1; i < exits.size(); ++i) {
-			std::cout << ", " << exits[i];
+			sstr << ", " << exits[i];
 		}
 	} else {
-		std::cout << "There are no exits.";
+		sstr << "There are no exits.";
 	}
+	writer.write(sstr.str());
 }

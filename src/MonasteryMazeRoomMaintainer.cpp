@@ -29,8 +29,8 @@ std::vector<MonasteryMazeRoomMaintainer::ExitDescriptor> MonasteryMazeRoom::exit
 	return ret;
 }
 
-void MonasteryMazeRoom::innerDescribe() const {
-	std::cout << "You have made it to: " << id;
+void MonasteryMazeRoom::innerDescribe(ConsoleOutputter& writer) const {
+	writer.write("You have made it to: {}", id);
 }
 
 }

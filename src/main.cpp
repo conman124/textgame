@@ -1,5 +1,6 @@
-#include "io/CommandReader.h"
 #include "interfaces/IRoomMaintainer.h"
+#include "io/CommandLoop.h"
+#include "io/ConsoleOutputter.h"
 #include "MonasteryMazeRoomMaintainer.h"
 #include "TimerManager.h"
 
@@ -11,9 +12,9 @@
 
 using namespace std::chrono_literals;
 
-void startTimer(TimerManager& timerManager) {
+void startTimer(TimerManager& timerManager, ConsoleOutputter& writer) {
 	TimerRequest timer = {
-		.callback = []() { std::cout << "It's been 15 seconds\n"; },
+		.callback = [&writer]() { writer.write("It's been 15 seconds"); },
 		.min = 15s,
 		.max = 15s,
 	};
@@ -22,7 +23,7 @@ void startTimer(TimerManager& timerManager) {
 
 	auto called = std::make_shared<int>(0);
 	RepeatingTimerRequest repeatRequest = {
-		.callback = [called]() { std::cout << "Timer\n"; return (++(*called) < 5); },
+		.callback = [called, &writer]() { writer.write("Timer"); return (++(*called) < 5); },
 		.min = 4s,
 		.max = 10000ms,
 		.ignoreMinFirstTime = true,
@@ -34,14 +35,17 @@ void startTimer(TimerManager& timerManager) {
 int main(int argc, char** argv) {
 	(void)argc, (void)argv;
 
+	rl_initialize();
+
 	CommandLoop commandLoop;
+	ConsoleOutputter writer{std::cout, commandLoop};
 	TimerManager timerManager;
 
 	auto maintainer = Game::MonasteryMazeRoomMaintainer{};
 	auto room = maintainer.getRoom("");
 
 	std::string exit;
-	room->describe();
+	room->describe(writer);
 
 	int commands = 0;
 
@@ -51,13 +55,14 @@ int main(int argc, char** argv) {
 		if(command == "exit" || command == "quit") { break; }
 		auto exits = room->exitDescriptors();
 		auto it = std::find_if(exits.begin(), exits.end(), [&command](auto exitDescriptor) { return command == exitDescriptor.name; });
+		if(it == exits.end()) { continue; }
 
 		room = maintainer.getRoom(it->id);
 
-		room->describe();
+		room->describe(writer);
 
 		if(++commands == 5) {
-			startTimer(timerManager);
+			startTimer(timerManager, writer);
 		}
 	}
 	

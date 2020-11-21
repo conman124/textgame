@@ -2,6 +2,7 @@
 #define MONASTERY_MAZE_ROOM_MAINTAINER_H
 
 #include "interfaces/IRoomMaintainer.h"
+#include "io/ConsoleOutputter.h"
 
 #include <string>
 
@@ -18,7 +19,7 @@ public:
 	MonasteryMazeRoom(std::string name);
 	virtual std::vector<IRoomMaintainer<std::string>::ExitDescriptor> exitDescriptors() const override;
 protected:
-	virtual void innerDescribe() const override;
+	virtual void innerDescribe(ConsoleOutputter& writer) const override;
 private:
 	std::string id;
 };

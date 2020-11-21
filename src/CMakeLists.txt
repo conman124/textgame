@@ -10,12 +10,13 @@ find_package(Boost 1.71 REQUIRED COMPONENTS fiber)
 find_package( Threads )
 
 include_directories( ${Boost_INCLUDE_DIRS} )
+include_directories( /usr/include/readline )
 
 add_executable(textgame 
 	main.cpp
 	interfaces/IRoom.cpp
-	io/CommandReader.cpp
+	io/CommandLoop.cpp
 	MonasteryMazeRoomMaintainer.cpp
 	TimerManager.cpp
 )
-target_link_libraries(textgame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
+target_link_libraries(textgame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} readline fmt)
