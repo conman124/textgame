@@ -10,8 +10,10 @@ void ConsoleOutputter::write(const std::string_view& string) {
 	if(prompted_readline) {
 		rl_clear_visible_line();
 	}
-	// TODO check for trailing newline
-	output << string << "\n";
+	output << string;
+	if(!string.ends_with("\n")) {
+		output << "\n";
+	}
 	if(prompted_readline) {
 		rl_on_new_line();
 		rl_redisplay();
