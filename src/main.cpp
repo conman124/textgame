@@ -1,6 +1,7 @@
 #include "interfaces/IRoomMaintainer.h"
 #include "io/CommandLoop.h"
 #include "io/ConsoleOutputter.h"
+#include "io/Style.h"
 #include "MonasteryMazeRoomMaintainer.h"
 #include "TimerManager.h"
 

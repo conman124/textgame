@@ -17,6 +17,7 @@ add_executable(textgame
 	interfaces/IRoom.cpp
 	io/CommandLoop.cpp
 	io/ConsoleOutputter.cpp
+	io/Style.cpp
 	MonasteryMazeRoomMaintainer.cpp
 	TimerManager.cpp
 )
