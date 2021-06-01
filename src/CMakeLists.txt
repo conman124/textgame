@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project("textgame")
 
 set(CMAKE_CXX_FLAGS "-std=c++20 -Wall -Wextra -Werror")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -Og -fsanitize=address")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fsanitize=address")
 
@@ -17,8 +17,11 @@ add_executable(textgame
 	interfaces/IRoom.cpp
 	io/CommandLoop.cpp
 	io/ConsoleOutputter.cpp
+	io/map_display.cpp
 	io/Style.cpp
+	Map.cpp
 	MonasteryMazeRoomMaintainer.cpp
 	TimerManager.cpp
+	WildernessRoomMaintainer.cpp
 )
 target_link_libraries(textgame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} readline fmt)

@@ -1,9 +1,13 @@
+#include "interfaces/IMap.h"
 #include "interfaces/IRoomMaintainer.h"
 #include "io/CommandLoop.h"
 #include "io/ConsoleOutputter.h"
+#include "io/map_display.h"
 #include "io/Style.h"
+#include "Map.h"
 #include "MonasteryMazeRoomMaintainer.h"
 #include "TimerManager.h"
+#include "WildernessRoomMaintainer.h"
 
 #include <algorithm>
 #include <chrono>
@@ -45,8 +49,8 @@ int main(int argc, char** argv) {
 	ConsoleOutputter writer{std::cout, commandLoop};
 	TimerManager timerManager;
 
-	auto maintainer = Game::MonasteryMazeRoomMaintainer{};
-	auto room = maintainer.getRoom("");
+	auto maintainer = Game::WildernessRoomMaintainer{};
+	auto room = maintainer.getRoom(std::make_pair(10, 10));
 
 	std::string exit;
 	writer.write(room->describe());
@@ -62,6 +66,10 @@ int main(int argc, char** argv) {
 		if(it == exits.end()) { continue; }
 
 		room = maintainer.getRoom(it->id);
+		// TODO bad
+		auto wildernessRoom = std::dynamic_pointer_cast<Game::WildernessRoom>(room);
+		Map map{wildernessRoom->location.first, wildernessRoom->location.second, maintainer};
+		writer.write(displayMap(map));
 
 		writer.write(room->describe());
 

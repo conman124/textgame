@@ -32,14 +32,14 @@ public:
 		virtual std::string innerDescribe() const override = 0;
 	};
 
-	std::shared_ptr<IFullRoom> getRoom(const RoomIdType& id);
+	std::shared_ptr<IFullRoom> getRoom(const RoomIdType& id) const;
 
 protected:
 	virtual std::shared_ptr<IFullRoom> constructRoom(const RoomIdType& id) const = 0;
 	virtual RoomIdType normalizeId(const RoomIdType& id) const;
 
 private:
-	std::map<RoomIdType, std::shared_ptr<IFullRoom>> cache;
+	mutable std::map<RoomIdType, std::shared_ptr<IFullRoom>> cache;
 };
 
 template <typename TRoomIdType>
@@ -66,7 +66,7 @@ std::vector<std::string> IRoomMaintainer<TRoomIdType>::IFullRoom::exitNames(bool
 }
 
 template <typename TRoomIdType>
-std::shared_ptr<typename IRoomMaintainer<TRoomIdType>::IFullRoom> IRoomMaintainer<TRoomIdType>::getRoom(const TRoomIdType& id) {
+std::shared_ptr<typename IRoomMaintainer<TRoomIdType>::IFullRoom> IRoomMaintainer<TRoomIdType>::getRoom(const TRoomIdType& id) const {
 	auto normalized = normalizeId(id);
 	auto it = cache.find(normalized);
 	if(it == cache.end()) {
